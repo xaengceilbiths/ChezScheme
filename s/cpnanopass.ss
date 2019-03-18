@@ -10578,8 +10578,10 @@
                    (let ([x (make-tmp 't)])
                      `(seq
                         (set! ,x ,t)
-                        ,(toC (in-context Rhs
-                                (%mref ,x ,(constant record-data-disp))))))]
+                        (if ,(%inline eq? ,x ,(%constant sfalse))
+                            ,(toC (in-context Rhs `(immediate 0)))
+                            ,(toC (in-context Rhs
+                                    (%mref ,x ,(constant record-data-disp)))))))]
                   [(fp-ftd& ,ftd)
                    (let ([x (make-tmp 't)])
                      (%seq
